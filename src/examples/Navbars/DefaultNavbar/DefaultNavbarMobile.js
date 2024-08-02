@@ -33,7 +33,7 @@ import ArgonTypography from "components/ArgonTypography";
 // Argon Dashboard 2 MUI exampless
 import DefaultNavbarDropdown from "examples/Navbars/DefaultNavbar/DefaultNavbarDropdown";
 
-// Argon Dashboard 2 PRO React contexts
+// Pulse Admin Dashboard React contexts
 import { useArgonController } from "context";
 
 function DefaultNavbarMobile({ routes, open }) {

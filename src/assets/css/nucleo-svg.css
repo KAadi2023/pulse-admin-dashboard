@@ -133,3 +133,10 @@ Stroke effects - Nucleo outline icons
   -o-transform: translateX(0.5px) translateY(0.5px);
   transform: translateX(0.5px) translateY(0.5px);
 }
+
+.admin-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
