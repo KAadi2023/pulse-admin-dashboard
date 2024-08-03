@@ -83,7 +83,7 @@ function Default() {
                   },
                 ],
               }}
-              height="36.125rem"
+              height="34.125rem"
             />
           </Grid>
           <Grid item xs={12} md={5}>
@@ -110,7 +110,7 @@ function Default() {
                   data: [60, 20],
                 },
               }}
-              height="36.125rem"
+              height="34.125rem"
             />
           </Grid>
         </Grid>
