@@ -14,9 +14,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DetailedStatisticsCard from "examples/Cards/StatisticsCards/DetailedStatisticsCard";
-import SalesTable from "examples/Tables/SalesTable";
-import CategoriesList from "examples/Lists/CategoriesList";
 import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
+import DefaultDoughnutChart from "examples/Charts/DoughnutCharts/DefaultDoughnutChart";
 
 // Argon Dashboard 2 MUI base styles
 import typography from "assets/theme/base/typography";
@@ -24,11 +23,6 @@ import typography from "assets/theme/base/typography";
 // Dashboard layout components
 import Slider from "layouts/dashboard/components/Slider";
 
-// Data
-import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
-import salesTableData from "layouts/dashboard/data/salesTableData";
-import categoriesListData from "layouts/dashboard/data/categoriesListData";
-import DefaultDoughnutChart from "examples/Charts/DoughnutCharts/DefaultDoughnutChart";
 
 function Default() {
   const { size } = typography;
@@ -61,14 +55,6 @@ function Default() {
               percentage={{ color: "error", count: "-2%", text: "since last quarter" }}
             />
           </Grid>
-          {/* <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="sales"
-              count="$103,430"
-              icon={{ color: "warning", component: <i className="ni ni-cart" /> }}
-              percentage={{ color: "success", count: "+5%", text: "than last month" }}
-            />
-          </Grid> */}
         </Grid>
         <Grid container spacing={3} mb={3}>
           <Grid item xs={12} lg={7}>
@@ -87,7 +73,16 @@ function Default() {
                   </ArgonTypography>
                 </ArgonBox>
               }
-              chart={gradientLineChartData}
+              chart={{
+                labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                datasets: [
+                  {
+                    label: "Mobile apps",
+                    color: "info",
+                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                  },
+                ],
+              }}
               height="36.125rem"
             />
           </Grid>
@@ -119,14 +114,6 @@ function Default() {
             />
           </Grid>
         </Grid>
-        {/* <Grid container spacing={3}>
-          <Grid item xs={12} md={7}>
-            <SalesTable title="Sales by Country" rows={salesTableData} />
-          </Grid>
-          <Grid item xs={12} lg={5}>
-            <Slider />
-          </Grid>
-        </Grid> */}
       </ArgonBox>
       <Footer />
     </DashboardLayout>
