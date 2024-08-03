@@ -1,18 +1,5 @@
 /* eslint-disable no-unused-vars */
-/**
-=========================================================
-* Argon Dashboard 2 MUI - v3.0.1
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-material-ui
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -41,6 +28,7 @@ import Slider from "layouts/dashboard/components/Slider";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 import salesTableData from "layouts/dashboard/data/salesTableData";
 import categoriesListData from "layouts/dashboard/data/categoriesListData";
+import DefaultDoughnutChart from "examples/Charts/DoughnutCharts/DefaultDoughnutChart";
 
 function Default() {
   const { size } = typography;
@@ -49,7 +37,7 @@ function Default() {
       <DashboardNavbar />
       <ArgonBox py={3}>
         <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <DetailedStatisticsCard
               title="today's money"
               count="$53,000"
@@ -57,7 +45,7 @@ function Default() {
               percentage={{ color: "success", count: "+55%", text: "since yesterday" }}
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <DetailedStatisticsCard
               title="today's users"
               count="2,300"
@@ -65,7 +53,7 @@ function Default() {
               percentage={{ color: "success", count: "+3%", text: "since last week" }}
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <DetailedStatisticsCard
               title="new clients"
               count="+3,462"
@@ -73,47 +61,72 @@ function Default() {
               percentage={{ color: "error", count: "-2%", text: "since last quarter" }}
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* <Grid item xs={12} md={6} lg={3}>
             <DetailedStatisticsCard
               title="sales"
               count="$103,430"
               icon={{ color: "warning", component: <i className="ni ni-cart" /> }}
               percentage={{ color: "success", count: "+5%", text: "than last month" }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid container spacing={3} mb={3}>
           <Grid item xs={12} lg={7}>
             <GradientLineChart
-              title="Sales Overview"
+              title="Last Messages"
               description={
                 <ArgonBox display="flex" alignItems="center">
                   <ArgonBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
                     <Icon sx={{ fontWeight: "bold" }}>arrow_upward</Icon>
                   </ArgonBox>
                   <ArgonTypography variant="button" color="text" fontWeight="medium">
-                    4% more{" "}
+                    33% more{" "}
                     <ArgonTypography variant="button" color="text" fontWeight="regular">
-                      in 2022
+                      from previous week
                     </ArgonTypography>
                   </ArgonTypography>
                 </ArgonBox>
               }
               chart={gradientLineChartData}
+              height="36.125rem"
             />
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <DefaultDoughnutChart
+              title="Total Users and Chats"
+              description={
+                <ArgonBox display="flex" alignItems="center">
+                  <ArgonBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
+                    <Icon sx={{ fontWeight: "bold" }}>arrow_upward</Icon>
+                  </ArgonBox>
+                  <ArgonTypography variant="button" color="text" fontWeight="medium">
+                    13% more{" "}
+                    <ArgonTypography variant="button" color="text" fontWeight="regular">
+                      from previous
+                    </ArgonTypography>
+                  </ArgonTypography>
+                </ArgonBox>
+              }
+              chart={{
+                labels: ["Users", "Chats"],
+                datasets: {
+                  label: "Projects",
+                  backgroundColors: ["error", "info"],
+                  data: [60, 20],
+                },
+              }}
+              height="36.125rem"
+            />
+          </Grid>
+        </Grid>
+        {/* <Grid container spacing={3}>
+          <Grid item xs={12} md={7}>
+            <SalesTable title="Sales by Country" rows={salesTableData} />
           </Grid>
           <Grid item xs={12} lg={5}>
             <Slider />
           </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <SalesTable title="Sales by Country" rows={salesTableData} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <CategoriesList title="categories" categories={categoriesListData} />
-          </Grid>
-        </Grid>
+        </Grid> */}
       </ArgonBox>
       <Footer />
     </DashboardLayout>

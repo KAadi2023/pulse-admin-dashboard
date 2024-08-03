@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Argon Dashboard 2 MUI - v3.0.1
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-material-ui
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useState, useEffect } from "react";
 
@@ -160,7 +147,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </ArgonBox>
         {isMini ? null : (
           <ArgonBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <ArgonBox pr={1}>
+            {/* <ArgonBox pr={1}>
               <ArgonInput
                 placeholder="Type here..."
                 startAdornment={
@@ -169,26 +156,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   </Icon>
                 }
               />
-            </ArgonBox>
+            </ArgonBox> */}
             <ArgonBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small">
-                  <Icon
-                    sx={({ palette: { dark, white } }) => ({
-                      color: light && transparentNavbar ? white.main : dark.main,
-                    })}
-                  >
-                    account_circle
-                  </Icon>
-                  <ArgonTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light && transparentNavbar ? "white" : "dark"}
-                  >
-                    Sign in
-                  </ArgonTypography>
-                </IconButton>
-              </Link>
               <IconButton
                 size="small"
                 color={light && transparentNavbar ? "white" : "dark"}
