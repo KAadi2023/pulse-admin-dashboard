@@ -28,6 +28,7 @@ import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
 // Argon Dashboard 2 MUI context
 import { useArgonController, setMiniSidenav } from "context";
+import { useAuth } from "context/authContext";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useArgonController();
@@ -35,8 +36,17 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const itemName = pathname.split("/").slice(1)[0];
+  const { logout } = useAuth();
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
@@ -135,7 +145,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               color={darkSidenav ? "white" : "dark"}
             >
               {brandName.split(' ').map((word, index) => (
-                <span key={index} style={{fontSize: 20, fontWeight: 700}}>
+                <span key={index} style={{ fontSize: 20, fontWeight: 700 }}>
                   {word}
                   {index < 1 ? ' ' : <br />}
                 </span>
@@ -150,6 +160,37 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <ArgonBox pt={1} mt="auto" mb={2} mx={2}>
         <SidenavFooter />
       </ArgonBox>
+      <div
+        onClick={handleLogout}
+        style={{
+          marginLeft: 'auto',
+          color: darkSidenav ? "white" : "dark",
+          cursor: "pointer",
+          opacity: 0.6,
+          transition: "opacity 0.3s ease-in-out",
+          "&:hover": {
+            opacity: 1,
+          },
+          fontSize: 14,
+          fontWeight: 500,
+          textTransform: "uppercase",
+          textDecoration: "none",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          padding: 8,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 40,
+          borderRadius: 4,
+          border: 'none',
+          backgroundColor: darkSidenav? '#333333' : '#ffffff',
+          gap: 2
+        }}
+      >
+        <Icon>logout</Icon>
+        Logout
+      </div>
     </SidenavRoot>
   );
 }

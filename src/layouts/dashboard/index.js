@@ -22,10 +22,36 @@ import typography from "assets/theme/base/typography";
 
 // Dashboard layout components
 import Slider from "layouts/dashboard/components/Slider";
+import { useEffect, useState } from "react";
 
 
 function Default() {
   const { size } = typography;
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT
+  const [stats, setStats] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchStats()
+  }, [])
+
+
+  // Fetch stats data here
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      // Replace this with your actual API call
+      const response = await fetch(`${apiEndpoint}/admin/stats`);
+      const data = await response.json();
+      console.log("data", data.stats)
+      setStats(data?.stats);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching stats data:", error);
+      setLoading(false);
+    }
+  }
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -33,24 +59,24 @@ function Default() {
         <Grid container spacing={3} mb={3}>
           <Grid item xs={12} md={6} lg={4}>
             <DetailedStatisticsCard
-              title="today's money"
-              count="$53,000"
+              title="Total Chats"
+              count={stats?.totalChats}
               icon={{ color: "info", component: <i className="ni ni-money-coins" /> }}
               percentage={{ color: "success", count: "+55%", text: "since yesterday" }}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <DetailedStatisticsCard
-              title="today's users"
-              count="2,300"
+              title="Toatal Users"
+              count={stats?.totalUsers}
               icon={{ color: "error", component: <i className="ni ni-world" /> }}
               percentage={{ color: "success", count: "+3%", text: "since last week" }}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <DetailedStatisticsCard
-              title="new clients"
-              count="+3,462"
+              title="Total Messages"
+              count={stats?.totalMessages}
               icon={{ color: "success", component: <i className="ni ni-paper-diploma" /> }}
               percentage={{ color: "error", count: "-2%", text: "since last quarter" }}
             />

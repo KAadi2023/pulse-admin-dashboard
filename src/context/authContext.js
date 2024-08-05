@@ -1,0 +1,77 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import PropTypes from 'prop-types';
+
+export const AuthContext = createContext();
+
+export const AuthContextProvider = ({ children }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
+    const login = async (secretKey) => {
+        try {
+            const response = await fetch(`${apiEndpoint}/admin/verify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ secretKey })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                return { success: false, message: result.message };
+            }
+
+            if (result.success) {
+                setIsAuthenticated(true);
+            }
+            return result;
+        } catch (error) {
+            console.log("Network Error: ", error);
+            return { success: false, message: error.message };
+        }
+    };
+    const logout = async () => {
+        try {
+            const response = await fetch(`${apiEndpoint}/admin/logout`);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error Response: ", errorData);
+                return { success: false, message: errorData.message };
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                setIsAuthenticated(false);
+            }
+            return result;
+        } catch (error) {
+            console.error("Network Error: ", error);
+            return { success: false, message: error.message };
+        }
+    }
+    return (
+        <AuthContext.Provider
+            value={{
+                isAuthenticated,
+                login,
+                logout,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    )
+
+}
+
+AuthContextProvider.propTypes = {
+    children: PropTypes.node.isRequired, // Add prop type validation for children
+};
+
+export const useAuth = () => {
+    const context = useContext(AuthContext)
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthContextProvider')
+    }
+    return context
+}
