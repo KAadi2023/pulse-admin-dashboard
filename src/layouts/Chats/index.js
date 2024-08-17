@@ -14,7 +14,7 @@ import Footer from "examples/Footer";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
@@ -22,6 +22,7 @@ import AvatarGroup from '@mui/material/AvatarGroup';
 function ChatsTable() {
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
     const [chats, setChats] = useState([])
+    const [loading, setLoading] = useState(false)
 
     console.log(chats)
 
@@ -32,11 +33,13 @@ function ChatsTable() {
 
     // use async and await
     async function fetchChats() {
+        setLoading(true)
         try {
             const response = await axios.get(`${apiEndpoint}/api/v1/admin/chats`);
             setChats(response?.data.chats)
-
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             console.error("Error fetching chats data:", error);
         }
     }
@@ -120,46 +123,51 @@ function ChatsTable() {
 
     return (
         <DashboardLayout>
-            <DashboardNavbar />
-            <ArgonBox py={3}>
-                <ArgonBox mb={3}>
-                    <Card>
-                        <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-                            <ArgonTypography variant="h6">Chats table</ArgonTypography>
-                        </ArgonBox>
-                        <ArgonBox
-                            sx={{
-                                "& .MuiTableRow-root:not(:last-child)": {
-                                    "& td": {
-                                        borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                                            `${borderWidth[1]} solid ${borderColor}`,
-                                    },
-                                },
-                            }}
-                        >
-                            <Box sx={{ height: '55%', width: '100%' }}>
-                                <DataGrid
-                                    rowHeight={60}
-                                    rows={chats}
-                                    columns={columns}
-                                    getRowId={(row) => row._id}
-                                    initialState={{
-                                        pagination: {
-                                            paginationModel: {
-                                                pageSize: 10,
+            {
+                loading ? (
+                    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <CircularProgress />
+                    </Box>
+                ) : (
+                    <>
+                        <DashboardNavbar />
+                        <ArgonBox py={3}>
+                            <ArgonBox mb={3}>
+                                <Card>
+                                    <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+                                        <ArgonTypography variant="h6">Chats table</ArgonTypography>
+                                    </ArgonBox>
+                                    <ArgonBox
+                                        sx={{
+                                            "& .MuiTableRow-root:not(:last-child)": {
+                                                "& td": {
+                                                    borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                                                        `${borderWidth[1]} solid ${borderColor}`,
+                                                },
                                             },
-                                        },
-                                    }}
-                                    pageSizeOptions={[5]}
-                                    checkboxSelection
-                                    disableRowSelectionOnClick
-                                />
-                            </Box>
+                                        }}
+                                    >
+                                        <DataGrid
+                                            rowHeight={60}
+                                            rows={chats}
+                                            columns={columns}
+                                            getRowId={(row) => row._id}
+                                            initialState={{
+                                                pagination: {
+                                                    paginationModel: { page: 0, pageSize: 10 },
+                                                },
+                                            }}
+                                            pageSizeOptions={[5, 10, 25, 50, 100]}
+                                            checkboxSelection
+                                            disableRowSelectionOnClick
+                                        />
+                                    </ArgonBox>
+                                </Card>
+                            </ArgonBox>
                         </ArgonBox>
-                    </Card>
-                </ArgonBox>
-            </ArgonBox>
-            <Footer />
+                        <Footer />
+                    </>
+                )}
         </DashboardLayout>
     );
 }
