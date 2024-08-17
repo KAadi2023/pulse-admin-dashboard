@@ -163,33 +163,17 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <div
         onClick={handleLogout}
         style={{
-          marginLeft: 'auto',
-          color: darkSidenav ? "white" : "dark",
-          cursor: "pointer",
-          opacity: 0.6,
-          transition: "opacity 0.3s ease-in-out",
-          "&:hover": {
-            opacity: 1,
-          },
-          fontSize: 14,
-          fontWeight: 500,
-          textTransform: "uppercase",
-          textDecoration: "none",
-          textOverflow: "ellipsis",
-          overflow: "hidden",
-          padding: 8,
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'center',
-          height: 40,
-          borderRadius: 4,
-          border: 'none',
-          backgroundColor: darkSidenav? '#333333' : '#ffffff',
-          gap: 2
+          alignItems: 'center',
+          cursor: 'pointer',
+          color: darkSidenav ? 'white' : 'dark',
+          padding: '10px',
+          gap: '8px'
         }}
       >
         <Icon>logout</Icon>
-        Logout
+        {!miniSidenav && <div>Logout</div>}
       </div>
     </SidenavRoot>
   );

@@ -12,7 +12,7 @@ import ArgonTypography from "components/ArgonTypography";
 import { useArgonController } from "context";
 
 // Images
-import icon from "assets/images/admin/Aditya.jpg";
+import icon from "assets/images/logo-ct.png";
 
 function SidenavFooter() {
   const [controller] = useArgonController();

@@ -41,9 +41,13 @@ function Default() {
     try {
       setLoading(true);
       // Replace this with your actual API call
-      const response = await fetch(`${apiEndpoint}/admin/stats`);
+      const response = await fetch(`${apiEndpoint}/api/v1/admin/stats`, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       const data = await response.json();
-      console.log("data", data.stats)
       setStats(data?.stats);
       setLoading(false);
     } catch (error) {
@@ -57,7 +61,7 @@ function Default() {
       <DashboardNavbar />
       <ArgonBox py={3}>
         <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={6} lg={3}>
             <DetailedStatisticsCard
               title="Total Chats"
               count={stats?.totalChats}
@@ -65,7 +69,7 @@ function Default() {
               percentage={{ color: "success", count: "+55%", text: "since yesterday" }}
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={6} lg={3}>
             <DetailedStatisticsCard
               title="Toatal Users"
               count={stats?.totalUsers}
@@ -73,7 +77,15 @@ function Default() {
               percentage={{ color: "success", count: "+3%", text: "since last week" }}
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={6} lg={3}>
+            <DetailedStatisticsCard
+              title="Toatal Groups"
+              count={stats?.totalGroups}
+              icon={{ color: "error", component: <i className="ni ni-world" /> }}
+              percentage={{ color: "success", count: "+3%", text: "since last week" }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
             <DetailedStatisticsCard
               title="Total Messages"
               count={stats?.totalMessages}
@@ -105,7 +117,7 @@ function Default() {
                   {
                     label: "Mobile apps",
                     color: "info",
-                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                    data: stats.messageChart,
                   },
                 ],
               }}
@@ -114,7 +126,7 @@ function Default() {
           </Grid>
           <Grid item xs={12} md={5}>
             <DefaultDoughnutChart
-              title="Total Users and Chats"
+              title="Stats"
               description={
                 <ArgonBox display="flex" alignItems="center">
                   <ArgonBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
@@ -129,11 +141,11 @@ function Default() {
                 </ArgonBox>
               }
               chart={{
-                labels: ["Users", "Chats"],
+                labels: ["Chats", "Users", "Messages", "Groups"],
                 datasets: {
                   label: "Projects",
-                  backgroundColors: ["error", "info"],
-                  data: [60, 20],
+                  backgroundColors: ["error", "info", "primary", "secondary"],
+                  data: [stats?.totalChats, stats?.totalUsers, stats?.totalMessages, stats?.totalGroups],
                 },
               }}
               height="34.125rem"

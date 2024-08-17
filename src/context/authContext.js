@@ -1,55 +1,87 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { Navigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+    const [authToken, setAuthToken] = useState("");
+
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, [])
+
+    // navigate on signing page if not authenticated
+    useEffect(() => {
+        if (!isAuthenticated) {
+            <Navigate
+                to={{ pathname: "admin/sign-in" }}
+                replace={true} />
+        }
+    }, [isAuthenticated])
 
     const login = async (secretKey) => {
         try {
-            const response = await fetch(`${apiEndpoint}/admin/verify`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ secretKey })
-            });
+            const response = await axios.post(
+                `${apiEndpoint}/api/v1/admin/verify`,
+                { secretKey },
+                { withCredentials: true }
+            );
 
-            const result = await response.json();
+            const result = response.data;
+            console.log('result', result);
 
-            if (!response.ok) {
+            if (response.status !== 200) {
                 return { success: false, message: result.message };
             }
 
             if (result.success) {
-                setIsAuthenticated(true);
+                setAuthToken(result.token)
+                localStorage.setItem(
+                    "authToken",
+                    result.token,
+                    { expires: new Date(result.tokenExpirationDate) }
+                )
             }
             return result;
         } catch (error) {
             console.log("Network Error: ", error);
-            return { success: false, message: error.message };
+            return { success: false, message: error.response?.data?.message || error.message };
         }
     };
+
     const logout = async () => {
         try {
-            const response = await fetch(`${apiEndpoint}/admin/logout`);
+            const response = await axios.get(`${apiEndpoint}/api/v1/admin/logout`, {
+                withCredentials: true
+            });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Error Response: ", errorData);
-                return { success: false, message: errorData.message };
+            const result = response.data;
+
+            if (response.status !== 200) {
+                console.error("Error Response: ", result);
+                return { success: false, message: result.message };
             }
 
-            const result = await response.json();
             if (result.success) {
                 setIsAuthenticated(false);
             }
             return result;
         } catch (error) {
             console.error("Network Error: ", error);
-            return { success: false, message: error.message };
+            return { success: false, message: error.response?.data?.message || error.message };
         }
-    }
+    };
+
+    console.log("token", authToken)
+
     return (
         <AuthContext.Provider
             value={{
@@ -60,18 +92,17 @@ export const AuthContextProvider = ({ children }) => {
         >
             {children}
         </AuthContext.Provider>
-    )
-
-}
+    );
+};
 
 AuthContextProvider.propTypes = {
-    children: PropTypes.node.isRequired, // Add prop type validation for children
+    children: PropTypes.node.isRequired,
 };
 
 export const useAuth = () => {
-    const context = useContext(AuthContext)
+    const context = useContext(AuthContext);
     if (!context) {
-        throw new Error('useAuth must be used within an AuthContextProvider')
+        throw new Error('useAuth must be used within an AuthContextProvider');
     }
-    return context
-}
+    return context;
+};

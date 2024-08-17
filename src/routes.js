@@ -8,6 +8,9 @@ import VirtualReality from "layouts/virtual-reality";
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
 import AdminSignIn from "layouts/authentication/admin-sign-in";
+import UsersTable from "layouts/Users";
+import MessagesTable from "layouts/Messages";
+import ChatsTable from "layouts/Chats";
 
 const routes = [
   {
@@ -43,7 +46,7 @@ const routes = [
     icon: (
       <ArgonBox component="i" color="warning" fontSize="25px" className="ni ni-circle-08" />
     ),
-    component: <Tables />,
+    component: <UsersTable />,
   },
   {
     type: "route",
@@ -53,7 +56,7 @@ const routes = [
     icon: (
       <ArgonBox component="i" color="warning" fontSize="25px" className="ni ni-email-83" />
     ),
-    component: <Tables />,
+    component: <MessagesTable />,
   },
   {
     type: "route",
@@ -63,7 +66,7 @@ const routes = [
     icon: (
       <ArgonBox component="i" color="warning" fontSize="25px" className="ni ni-chat-round" />
     ),
-    component: <Tables />,
+    component: <ChatsTable />,
   },
   {
     route: "/admin/sign-in",
